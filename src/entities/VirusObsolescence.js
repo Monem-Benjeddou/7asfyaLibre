@@ -1,19 +1,20 @@
 /**
- * Enemy
- * Base enemy entity with patrol AI
- * Professional design with animations
+ * Virus de l'Obsolescence
+ * Basic enemy representing obsolete hardware due to Windows 10 EOL
+ * Equivalent to Goomba - slow, predictable movement
+ * Professional pixel art design with animations
  */
 
 import { Entity } from './Entity.js';
 import { Physics } from '../game/Physics.js';
 import { Collision } from '../game/Collision.js';
 
-export class Enemy extends Entity {
+export class VirusObsolescence extends Entity {
   constructor(x, y, patrolLeft, patrolRight) {
     super(x, y, 32, 32);
     this.patrolLeft = patrolLeft;
     this.patrolRight = patrolRight;
-    this.patrolSpeed = 1.0;
+    this.patrolSpeed = 0.8; // Slow, predictable
     this.direction = 1; // 1 = right, -1 = left
     this.onGround = false;
     this.defeated = false;
@@ -22,10 +23,11 @@ export class Enemy extends Entity {
     
     // Design constants
     this.COLORS = {
-      body: '#FF0000',      // Red - 8-bit palette
-      bodyDark: '#CC0000',  // Darker red
-      bodyLight: '#FF4040', // Lighter red
-      eyes: '#000000',      // Black eyes
+      body: '#FF4040',      // Bright red
+      bodyDark: '#CC0000',  // Darker red for depth
+      bodyLight: '#FF8080', // Lighter red for highlight
+      circuit: '#000000',   // Black for circuit lines
+      alert: '#FFFF00',     // Yellow for alert
       outline: '#000000'    // Black outline
     };
   }
@@ -37,7 +39,7 @@ export class Enemy extends Entity {
     this.animationFrame += deltaTime * 0.005;
     this.walkCycle = Math.sin(this.animationFrame * 2) * 0.5;
 
-    // Patrol movement
+    // Slow, predictable patrol movement
     if (this.direction > 0) {
       this.vx = this.patrolSpeed;
       if (this.x >= this.patrolRight) {
@@ -70,11 +72,11 @@ export class Enemy extends Entity {
           } else if (collision.type === 'left') {
             this.x = collision.adjustX;
             this.vx = 0;
-            this.direction = 1; // Turn around
+            this.direction = 1;
           } else if (collision.type === 'right') {
             this.x = collision.adjustX;
             this.vx = 0;
-            this.direction = -1; // Turn around
+            this.direction = -1;
           }
         }
       }
@@ -113,71 +115,85 @@ export class Enemy extends Entity {
     if (this.defeated) return;
 
     const { COLORS } = this;
+    const centerX = this.x + this.width / 2;
+    const centerY = this.y + this.height / 2;
     const walkOffset = this.walkCycle * 1.5;
 
-    // Enemy body with 3D effect
-    // Shadow layer
+    // Main body with 3D effect
+    // Base body (darker red)
     ctx.fillStyle = COLORS.bodyDark;
     ctx.fillRect(this.x + 2, this.y + 2, this.width - 4, this.height - 4);
     
-    // Main body (red)
+    // Main body (bright red)
     ctx.fillStyle = COLORS.body;
     ctx.fillRect(this.x + 1, this.y + 1, this.width - 2, this.height - 2);
     
     // Highlight (top-left)
     ctx.fillStyle = COLORS.bodyLight;
-    ctx.fillRect(this.x + 2, this.y + 2, 12, 8);
-    ctx.fillRect(this.x + 2, this.y + 2, 8, 12);
+    ctx.fillRect(this.x + 2, this.y + 2, 10, 6);
+    ctx.fillRect(this.x + 2, this.y + 2, 6, 10);
     
     // Shadow (bottom-right)
     ctx.fillStyle = COLORS.bodyDark;
-    ctx.fillRect(this.x + this.width - 10, this.y + this.height - 6, 8, 4);
-    ctx.fillRect(this.x + this.width - 6, this.y + this.height - 10, 4, 8);
+    ctx.fillRect(this.x + this.width - 8, this.y + this.height - 6, 6, 4);
+    ctx.fillRect(this.x + this.width - 6, this.y + this.height - 8, 4, 6);
     
     // Black outline
     ctx.strokeStyle = COLORS.outline;
     ctx.lineWidth = 2;
     ctx.strokeRect(this.x, this.y, this.width, this.height);
-
-    // Draw eyes (animated blink)
-    const blink = Math.floor(this.animationFrame * 2) % 20 < 2;
-    if (!blink) {
-      ctx.fillStyle = COLORS.eyes;
-      // Left eye
-      ctx.fillRect(this.x + 9, this.y + 10, 5, 5);
-      // Right eye
-      ctx.fillRect(this.x + 18, this.y + 10, 5, 5);
-      
-      // Eye highlights
-      ctx.fillStyle = '#FFFFFF';
-      ctx.fillRect(this.x + 10, this.y + 11, 2, 2);
-      ctx.fillRect(this.x + 19, this.y + 11, 2, 2);
-    } else {
-      // Blinking - draw as lines
-      ctx.strokeStyle = COLORS.eyes;
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(this.x + 9, this.y + 12);
-      ctx.lineTo(this.x + 14, this.y + 12);
-      ctx.moveTo(this.x + 18, this.y + 12);
-      ctx.lineTo(this.x + 23, this.y + 12);
-      ctx.stroke();
-    }
     
-    // Mouth (simple line)
-    ctx.strokeStyle = COLORS.eyes;
+    // Circuit board pattern (broken/obsolete)
+    ctx.strokeStyle = COLORS.circuit;
+    ctx.lineWidth = 1;
+    
+    // Horizontal circuit lines
+    ctx.beginPath();
+    ctx.moveTo(this.x + 4, this.y + 10);
+    ctx.lineTo(this.x + 12, this.y + 10);
+    ctx.moveTo(this.x + 20, this.y + 10);
+    ctx.lineTo(this.x + 28, this.y + 10);
+    ctx.moveTo(this.x + 4, this.y + 22);
+    ctx.lineTo(this.x + 12, this.y + 22);
+    ctx.moveTo(this.x + 20, this.y + 22);
+    ctx.lineTo(this.x + 28, this.y + 22);
+    ctx.stroke();
+    
+    // Vertical circuit lines (broken)
+    ctx.beginPath();
+    ctx.moveTo(this.x + 8, this.y + 6);
+    ctx.lineTo(this.x + 8, this.y + 14);
+    ctx.moveTo(this.x + 24, this.y + 18);
+    ctx.lineTo(this.x + 24, this.y + 26);
+    ctx.stroke();
+    
+    // Broken processor chip (center)
+    ctx.fillStyle = COLORS.circuit;
+    ctx.fillRect(centerX - 6, centerY - 6, 12, 12);
+    
+    // Crack lines through chip
+    ctx.strokeStyle = COLORS.alert;
     ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.moveTo(this.x + 10, this.y + 20);
-    ctx.lineTo(this.x + 22, this.y + 20);
+    ctx.moveTo(centerX - 6, centerY - 6);
+    ctx.lineTo(centerX + 6, centerY + 6);
+    ctx.moveTo(centerX + 6, centerY - 6);
+    ctx.lineTo(centerX - 6, centerY + 6);
     ctx.stroke();
+    
+    // Alert indicator (blinking)
+    const alertVisible = Math.floor(this.animationFrame * 3) % 2 === 0;
+    if (alertVisible) {
+      ctx.fillStyle = COLORS.alert;
+      ctx.fillRect(this.x + 24, this.y + 4, 4, 4);
+    }
     
     // Legs/feet (animated walk cycle)
     ctx.fillStyle = COLORS.bodyDark;
     const leftFootY = this.y + this.height - 2 + walkOffset;
     const rightFootY = this.y + this.height - 2 - walkOffset;
-    ctx.fillRect(this.x + 6, leftFootY, 5, 2);
-    ctx.fillRect(this.x + 21, rightFootY, 5, 2);
+    ctx.fillRect(this.x + 6, leftFootY, 4, 2);
+    ctx.fillRect(this.x + 22, rightFootY, 4, 2);
   }
 }
 

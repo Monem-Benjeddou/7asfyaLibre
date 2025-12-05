@@ -31,7 +31,7 @@ function App() {
   };
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-game-darker">
+    <div className="relative w-full h-screen overflow-hidden bg-gradient-dark">
       <PlatformerCanvas
         ref={canvasRef}
         onGameStateChange={handleGameStateChange}

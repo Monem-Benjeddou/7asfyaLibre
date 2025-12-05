@@ -75,7 +75,7 @@ export const PlatformerCanvas = forwardRef(({ onGameStateChange }, ref) => {
       ref={canvasRef}
       className="block w-full h-full"
       style={{ 
-        background: 'linear-gradient(to bottom, #87CEEB 0%, #98D8E8 100%)',
+        background: '#40A0FF',
         imageRendering: 'pixelated'
       }}
     />

@@ -1,18 +1,71 @@
 @import "tailwindcss";
 
 @theme {
+  /* Resistance Theme Colors - Primary */
+  --color-resistance: #10b981;
+  --color-resistance-light: #34d399;
+  --color-resistance-dark: #059669;
+  
+  /* Digital Blue - Secondary */
+  --color-digital: #3b82f6;
+  --color-digital-light: #60a5fa;
+  --color-digital-dark: #2563eb;
+  
+  /* Responsibility Orange - Accent */
+  --color-responsibility: #f59e0b;
+  --color-responsibility-light: #fbbf24;
+  --color-responsibility-dark: #d97706;
+  
+  /* Dark Backgrounds */
+  --color-dark-1: #020617;
+  --color-dark-2: #0f172a;
+  --color-dark-3: #1e293b;
+  --color-dark-4: #334155;
+  
+  /* Text Colors */
+  --color-text-primary: #f8fafc;
+  --color-text-secondary: #cbd5e1;
+  --color-text-muted: #94a3b8;
+  
+  /* Semantic Colors */
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+  --color-info: #3b82f6;
+  
+  /* Legacy (keep for compatibility) */
   --color-game-green: #10b981;
   --color-game-yellow: #f59e0b;
   --color-game-red: #ef4444;
   --color-game-dark: #0f172a;
   --color-game-darker: #020617;
+  
+  /* 8-bit Pixel Art Palette */
+  --color-pixel-sky: #40A0FF;
+  --color-pixel-sun: #FFFF00;
+  --color-pixel-cloud: #FFFFFF;
+  --color-pixel-ground: #A85800;
+  --color-pixel-grass: #50D010;
+  --color-pixel-pipe: #808080;
+  --color-pixel-locker: #4040C8;
+  --color-pixel-char-red: #FF0000;
+  --color-pixel-char-blue: #4040FF;
+  --color-pixel-char-skin: #FFC080;
+  --color-pixel-bookshelf: #783C08;
+  --color-pixel-desk: #A07840;
+  --color-pixel-screen-off: #181818;
+  --color-pixel-screen-blue: #0000A0;
+  --color-pixel-building-purple: #8040A0;
+  --color-pixel-building-orange: #E08040;
+  --color-pixel-building-green: #A0D080;
+  --color-pixel-outline: #000000;
 }
 
 @layer base {
   body {
-    background-color: var(--color-game-darker);
-    color: white;
-    font-family: system-ui, -apple-system, sans-serif;
+    background: linear-gradient(135deg, var(--color-dark-1) 0%, var(--color-dark-2) 50%, var(--color-dark-1) 100%);
+    color: var(--color-text-primary);
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
     margin: 0;
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
@@ -28,5 +81,61 @@
 @layer utilities {
   .text-shadow {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+  
+  .text-hero {
+    font-size: 3.5rem;
+    font-weight: 800;
+    text-shadow: 
+      0 4px 8px rgba(0, 0, 0, 0.5),
+      0 0 20px rgba(16, 185, 129, 0.3);
+  }
+  
+  .text-resistance {
+    color: var(--color-resistance);
+    font-weight: 700;
+  }
+  
+  .bg-pattern-grid {
+    background-image: 
+      linear-gradient(rgba(16, 185, 129, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(16, 185, 129, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+  
+  .bg-glass {
+    background: rgba(30, 41, 59, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+  }
+  
+  .btn-primary {
+    background: linear-gradient(135deg, var(--color-resistance) 0%, var(--color-resistance-dark) 100%);
+    box-shadow: 
+      0 4px 6px rgba(0, 0, 0, 0.3),
+      0 0 20px rgba(16, 185, 129, 0.4);
+    transition: all 0.3s ease;
+  }
+  
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+      0 6px 12px rgba(0, 0, 0, 0.4),
+      0 0 30px rgba(16, 185, 129, 0.6);
+  }
+  
+  .btn-secondary {
+    background: linear-gradient(135deg, var(--color-digital) 0%, var(--color-digital-dark) 100%);
+    box-shadow: 
+      0 4px 6px rgba(0, 0, 0, 0.3),
+      0 0 20px rgba(59, 130, 246, 0.4);
+    transition: all 0.3s ease;
+  }
+  
+  .btn-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+      0 6px 12px rgba(0, 0, 0, 0.4),
+      0 0 30px rgba(59, 130, 246, 0.6);
   }
 }

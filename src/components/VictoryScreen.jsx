@@ -1,18 +1,21 @@
 export function VictoryScreen({ score, onRestart }) {
   return (
-    <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
-      <div className="bg-game-dark border-2 border-green-500 rounded-lg p-8 max-w-md w-full mx-4 text-center">
-        <h1 className="text-4xl font-bold text-green-500 mb-4">Victory!</h1>
-        <p className="text-white text-xl mb-6">You reached the goal!</p>
-        <div className="bg-game-darker rounded-lg p-4 mb-6">
-          <p className="text-white text-lg">Final Score</p>
-          <p className="text-yellow-400 text-3xl font-bold">{score}</p>
+    <div className="fixed inset-0 bg-gradient-to-b from-dark-1 via-dark-2 to-dark-1 flex items-center justify-center z-50">
+      {/* Radial gradient overlay with green glow */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(16,185,129,0.15),transparent)]" />
+      
+      <div className="relative z-10 bg-glass border-2 border-resistance/30 rounded-xl p-8 max-w-md w-full mx-4 text-center shadow-2xl">
+        <h1 className="text-4xl font-bold text-resistance mb-4 text-shadow">Autonomie Numérique Atteinte !</h1>
+        <p className="text-text-primary text-xl mb-6">Vous avez atteint l'objectif !</p>
+        <div className="bg-dark-1 rounded-lg p-4 mb-6 border border-resistance/20">
+          <p className="text-text-secondary text-lg">Score Final</p>
+          <p className="text-warning text-3xl font-bold">{score}</p>
         </div>
         <button
           onClick={onRestart}
-          className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition-colors text-lg"
+          className="btn-primary px-8 py-3 text-white font-bold rounded-lg text-lg"
         >
-          Play Again
+          Rejouer
         </button>
       </div>
     </div>
