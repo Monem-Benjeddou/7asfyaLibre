@@ -27,3 +27,4 @@ export function CharacterPortrait({ character, size = 'md' }) {
   );
 }
 
+

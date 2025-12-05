@@ -35,9 +35,9 @@ export class VirusObsolescence extends Entity {
   update(deltaTime, platforms) {
     if (this.defeated) return;
 
-    // Update animation
-    this.animationFrame += deltaTime * 0.005;
-    this.walkCycle = Math.sin(this.animationFrame * 2) * 0.5;
+    // Update animation (slower)
+    this.animationFrame += deltaTime * 0.001;
+    this.walkCycle = Math.sin(this.animationFrame * 1) * 0.5;
 
     // Slow, predictable patrol movement
     if (this.direction > 0) {
@@ -181,8 +181,8 @@ export class VirusObsolescence extends Entity {
     ctx.lineTo(centerX - 6, centerY + 6);
     ctx.stroke();
     
-    // Alert indicator (blinking)
-    const alertVisible = Math.floor(this.animationFrame * 3) % 2 === 0;
+    // Alert indicator (blinking - slower)
+    const alertVisible = Math.floor(this.animationFrame * 0.75) % 2 === 0;
     if (alertVisible) {
       ctx.fillStyle = COLORS.alert;
       ctx.fillRect(this.x + 24, this.y + 4, 4, 4);

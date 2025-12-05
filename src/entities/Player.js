@@ -96,84 +96,130 @@ export class Player extends Entity {
   }
 
   render(ctx) {
-    // PM Student Character: Blue marine and Green uniform (ecocitoyenneté) with NIRD badge
+    // Headmaster Character: Formal suit with tie and glasses
     
-    // Head (student, no hat)
+    // Head
     ctx.fillStyle = '#FFC080'; // Skin tone
-    ctx.fillRect(this.x + 10, this.y + 8, 20, 18);
+    ctx.fillRect(this.x + 10, this.y + 5, 20, 20);
     ctx.strokeStyle = '#000000';
     ctx.lineWidth = 1;
-    ctx.strokeRect(this.x + 10, this.y + 8, 20, 18);
+    ctx.strokeRect(this.x + 10, this.y + 5, 20, 20);
     
-    // Hair (dark brown)
-    ctx.fillStyle = '#783C08';
-    ctx.fillRect(this.x + 8, this.y + 8, 24, 6);
-    ctx.strokeRect(this.x + 8, this.y + 8, 24, 6);
+    // Hair (gray/white for mature headmaster)
+    ctx.fillStyle = '#C0C0C0'; // Gray hair
+    ctx.fillRect(this.x + 8, this.y + 5, 24, 8);
+    ctx.strokeRect(this.x + 8, this.y + 5, 24, 8);
+    // Hair sides
+    ctx.fillRect(this.x + 6, this.y + 8, 4, 10);
+    ctx.fillRect(this.x + 30, this.y + 8, 4, 10);
+    ctx.strokeRect(this.x + 6, this.y + 8, 4, 10);
+    ctx.strokeRect(this.x + 30, this.y + 8, 4, 10);
     
-    // Eyes
-    ctx.fillStyle = '#000000';
-    ctx.fillRect(this.x + 13, this.y + 15, 3, 3);
-    ctx.fillRect(this.x + 24, this.y + 15, 3, 3);
-    
-    // Smile
+    // Glasses (round frames)
     ctx.strokeStyle = '#000000';
-    ctx.lineWidth = 1;
+    ctx.lineWidth = 2;
+    // Left lens
     ctx.beginPath();
-    ctx.arc(this.x + 20, this.y + 20, 6, 0, Math.PI);
+    ctx.arc(this.x + 15, this.y + 13, 5, 0, Math.PI * 2);
+    ctx.stroke();
+    // Right lens
+    ctx.beginPath();
+    ctx.arc(this.x + 25, this.y + 13, 5, 0, Math.PI * 2);
+    ctx.stroke();
+    // Bridge
+    ctx.beginPath();
+    ctx.moveTo(this.x + 20, this.y + 13);
+    ctx.lineTo(this.x + 20, this.y + 13);
     ctx.stroke();
     
-    // Body - Blue marine uniform (top part)
-    ctx.fillStyle = '#0000C0'; // Blue marine
-    ctx.fillRect(this.x + 8, this.y + 26, 24, 20);
-    ctx.strokeRect(this.x + 8, this.y + 26, 24, 20);
+    // Eyes (behind glasses)
+    ctx.fillStyle = '#000000';
+    ctx.fillRect(this.x + 13, this.y + 12, 2, 2);
+    ctx.fillRect(this.x + 25, this.y + 12, 2, 2);
     
-    // Green part (ecocitoyenneté) - lower body
-    ctx.fillStyle = '#50D010'; // Green
-    ctx.fillRect(this.x + 8, this.y + 36, 24, 14);
-    ctx.strokeRect(this.x + 8, this.y + 36, 24, 14);
+    // Mustache (professional)
+    ctx.fillStyle = '#C0C0C0';
+    ctx.fillRect(this.x + 14, this.y + 18, 12, 3);
+    ctx.strokeRect(this.x + 14, this.y + 18, 12, 3);
     
-    // NIRD Badge (visible on chest)
+    // Suit jacket (dark blue/black formal)
+    ctx.fillStyle = '#181818'; // Dark suit
+    ctx.fillRect(this.x + 6, this.y + 25, 28, 22);
+    ctx.strokeRect(this.x + 6, this.y + 25, 28, 22);
+    
+    // Suit lapels
+    ctx.fillStyle = '#202020';
+    ctx.fillRect(this.x + 6, this.y + 25, 28, 4);
+    ctx.strokeRect(this.x + 6, this.y + 25, 28, 4);
+    
+    // Tie (red/blue formal tie)
+    ctx.fillStyle = '#4040C8'; // Blue tie
+    ctx.fillRect(this.x + 18, this.y + 27, 4, 18);
+    ctx.strokeRect(this.x + 18, this.y + 27, 4, 18);
+    // Tie knot
+    ctx.fillRect(this.x + 17, this.y + 27, 6, 4);
+    ctx.strokeRect(this.x + 17, this.y + 27, 6, 4);
+    
+    // Shirt collar (white)
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(this.x + 12, this.y + 27, 6, 3);
+    ctx.fillRect(this.x + 22, this.y + 27, 6, 3);
+    ctx.strokeRect(this.x + 12, this.y + 27, 6, 3);
+    ctx.strokeRect(this.x + 22, this.y + 27, 6, 3);
+    
+    // NIRD Badge (on suit lapel)
     ctx.fillStyle = '#FFFF00'; // Yellow badge
-    ctx.fillRect(this.x + 16, this.y + 28, 8, 8);
+    ctx.fillRect(this.x + 10, this.y + 28, 6, 6);
     ctx.strokeStyle = '#000000';
-    ctx.strokeRect(this.x + 16, this.y + 28, 8, 8);
+    ctx.strokeRect(this.x + 10, this.y + 28, 6, 6);
     // Badge text "N"
     ctx.fillStyle = '#000000';
-    ctx.font = 'bold 6px Arial';
-    ctx.fillText('N', this.x + 18, this.y + 34);
+    ctx.font = 'bold 5px Arial';
+    ctx.fillText('N', this.x + 12, this.y + 32);
     
-    // Arms
+    // Arms (in suit)
     const armOffset = Math.sin(this.animationFrame) * 2; // Walking animation
     if (this.fistRaised) {
-      // Raised fist (victory symbol when jumping)
+      // Raised arm (victory symbol when jumping)
+      ctx.fillStyle = '#181818';
+      ctx.fillRect(this.x + 2, this.y + 28, 6, 14);
+      ctx.strokeRect(this.x + 2, this.y + 28, 6, 14);
+      // Hand
       ctx.fillStyle = '#FFC080';
-      ctx.fillRect(this.x + 4, this.y + 28, 6, 12);
-      ctx.strokeRect(this.x + 4, this.y + 28, 6, 12);
-      // Fist
-      ctx.fillRect(this.x + 2, this.y + 26, 8, 6);
-      ctx.strokeRect(this.x + 2, this.y + 26, 8, 6);
+      ctx.fillRect(this.x + 0, this.y + 26, 8, 6);
+      ctx.strokeRect(this.x + 0, this.y + 26, 8, 6);
     } else {
+      ctx.fillStyle = '#181818';
+      ctx.fillRect(this.x + 2, this.y + 30 + armOffset, 6, 12);
+      ctx.strokeRect(this.x + 2, this.y + 30 + armOffset, 6, 12);
+      // Hand
       ctx.fillStyle = '#FFC080';
-      ctx.fillRect(this.x + 4, this.y + 30 + armOffset, 6, 10);
-      ctx.strokeRect(this.x + 4, this.y + 30 + armOffset, 6, 10);
+      ctx.fillRect(this.x + 1, this.y + 40 + armOffset, 4, 4);
+      ctx.strokeRect(this.x + 1, this.y + 40 + armOffset, 4, 4);
     }
     
+    ctx.fillStyle = '#181818';
+    ctx.fillRect(this.x + 32, this.y + 30 - armOffset, 6, 12);
+    ctx.strokeRect(this.x + 32, this.y + 30 - armOffset, 6, 12);
+    // Hand
     ctx.fillStyle = '#FFC080';
-    ctx.fillRect(this.x + 30, this.y + 30 - armOffset, 6, 10);
-    ctx.strokeRect(this.x + 30, this.y + 30 - armOffset, 6, 10);
+    ctx.fillRect(this.x + 35, this.y + 40 - armOffset, 4, 4);
+    ctx.strokeRect(this.x + 35, this.y + 40 - armOffset, 4, 4);
     
-    // Legs - Green pants
-    ctx.fillStyle = '#50D010';
+    // Suit pants (dark)
+    ctx.fillStyle = '#181818';
     const legOffset = Math.sin(this.animationFrame + Math.PI) * 1;
-    ctx.fillRect(this.x + 10, this.y + 45, 8, 5);
-    ctx.fillRect(this.x + 22, this.y + 45, 8, 5);
-    ctx.strokeRect(this.x + 10, this.y + 45, 8, 5);
-    ctx.strokeRect(this.x + 22, this.y + 45, 8, 5);
+    ctx.fillRect(this.x + 10, this.y + 47, 8, 3);
+    ctx.fillRect(this.x + 22, this.y + 47, 8, 3);
+    ctx.strokeRect(this.x + 10, this.y + 47, 8, 3);
+    ctx.strokeRect(this.x + 22, this.y + 47, 8, 3);
     
-    // Shoes
+    // Formal shoes (black)
     ctx.fillStyle = '#000000';
-    ctx.fillRect(this.x + 10, this.y + 50, 8, 3);
-    ctx.fillRect(this.x + 22, this.y + 50, 8, 3);
+    ctx.fillRect(this.x + 9, this.y + 50, 10, 3);
+    ctx.fillRect(this.x + 21, this.y + 50, 10, 3);
+    ctx.strokeRect(this.x + 9, this.y + 50, 10, 3);
+    ctx.strokeRect(this.x + 21, this.y + 50, 10, 3);
   }
 }
 

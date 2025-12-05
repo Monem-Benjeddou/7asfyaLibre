@@ -1,78 +1,79 @@
 /**
- * Kit de Reconditionnement
- * Power-up item representing hardware reuse and reconditioning
- * Effect: +50 Points / +1 School Budget Level (cost reduction)
- * Power-up: Temporary speed or jump bonus
+ * Ordinateur Reconditionné (Reconditioned Computer)
+ * Represents hardware reuse and sustainability (Durabilité)
+ * Effect: +50 Points / +3 Réemploi
  */
 
 import { Entity } from './Entity.js';
 
 export class KitReconditionnement extends Entity {
   constructor(x, y) {
-    super(x, y, 22, 22);
+    super(x, y, 28, 24);
+    this.type = 'ordinateur'; // Item type for story progression
     this.collected = false;
-    this.rotation = 0;
+    this.bobOffset = 0;
+    this.bobSpeed = 0.12;
     this.points = 50;
-    this.budgetBonus = 1;
-    this.powerUpType = 'speed'; // 'speed' or 'jump'
-    this.powerUpDuration = 5000; // 5 seconds
   }
 
   update(deltaTime) {
-    // Rotate for visual effect
-    this.rotation += 0.1;
+    // Slight up/down movement (no rotation)
+    this.bobOffset += this.bobSpeed;
+    this.y += Math.sin(this.bobOffset) * 0.25;
   }
 
   collect() {
     this.collected = true;
     return {
       points: this.points,
-      budget: this.budgetBonus,
-      powerUp: {
-        type: this.powerUpType,
-        duration: this.powerUpDuration
-      }
+      reemploi: 3  // Pièces de Réemploi (Durabilité)
     };
   }
 
   render(ctx) {
     if (this.collected) return;
 
-    ctx.save();
-    ctx.translate(this.x + this.width / 2, this.y + this.height / 2);
-    ctx.rotate(this.rotation);
-
-    // Toolbox (brown box)
-    ctx.fillStyle = '#A07840';
-    ctx.fillRect(-11, -8, 22, 16);
+    // Reconditioned computer/laptop (Durabilité theme)
+    // Monitor/screen (gray)
+    ctx.fillStyle = '#808080';
+    ctx.fillRect(this.x + 2, this.y + 2, 24, 16);
     ctx.strokeStyle = '#000000';
     ctx.lineWidth = 2;
-    ctx.strokeRect(-11, -8, 22, 16);
+    ctx.strokeRect(this.x + 2, this.y + 2, 24, 16);
 
-    // Toolbox lid
-    ctx.fillStyle = '#986830';
-    ctx.fillRect(-11, -8, 22, 4);
-    ctx.strokeRect(-11, -8, 22, 4);
+    // Screen (dark blue - Linux desktop)
+    ctx.fillStyle = '#0000A0';
+    ctx.fillRect(this.x + 4, this.y + 4, 20, 12);
+    ctx.strokeRect(this.x + 4, this.y + 4, 20, 12);
 
-    // Recycle arrow (green)
+    // Screen content (terminal window)
+    ctx.fillStyle = '#00FF00'; // Green terminal text
+    ctx.fillRect(this.x + 6, this.y + 6, 8, 1);
+    ctx.fillRect(this.x + 6, this.y + 8, 6, 1);
+    ctx.fillRect(this.x + 6, this.y + 10, 10, 1);
+
+    // Recycle symbol on screen (green)
     ctx.fillStyle = '#50D010';
     ctx.strokeStyle = '#000000';
     ctx.lineWidth = 1;
-    
-    // Arrow shape
+    // Circular arrow
     ctx.beginPath();
-    ctx.moveTo(0, -4);
-    ctx.lineTo(-4, 0);
-    ctx.lineTo(-2, 0);
-    ctx.lineTo(-2, 4);
-    ctx.lineTo(2, 4);
-    ctx.lineTo(2, 0);
-    ctx.lineTo(4, 0);
+    ctx.arc(this.x + 18, this.y + 12, 4, 0, Math.PI * 2);
+    ctx.stroke();
+    // Arrow inside
+    ctx.beginPath();
+    ctx.moveTo(this.x + 18, this.y + 8);
+    ctx.lineTo(this.x + 16, this.y + 10);
+    ctx.lineTo(this.x + 20, this.y + 10);
+    ctx.lineTo(this.x + 18, this.y + 12);
     ctx.closePath();
     ctx.fill();
     ctx.stroke();
 
-    ctx.restore();
+    // Base/stand (brown - wooden)
+    ctx.fillStyle = '#783C08';
+    ctx.fillRect(this.x + 6, this.y + 18, 16, 4);
+    ctx.strokeRect(this.x + 6, this.y + 18, 16, 4);
   }
 }
 

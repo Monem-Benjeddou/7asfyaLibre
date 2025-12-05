@@ -117,5 +117,56 @@ export class BlocNIRD extends Entity {
       ctx.stroke();
     }
   }
+
+  renderInactive(ctx) {
+    // Render block as grayed out/inactive when not yet unlocked
+    const brickColor = '#808080'; // Gray
+    const brickDark = '#606060';
+    
+    // Draw brick block (grayed out)
+    ctx.fillStyle = brickColor;
+    ctx.fillRect(this.x, this.y, this.width, this.height);
+    
+    // Black outline
+    ctx.strokeStyle = '#000000';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(this.x, this.y, this.width, this.height);
+    
+    // Brick texture (darker gray lines)
+    ctx.strokeStyle = brickDark;
+    ctx.lineWidth = 1;
+    
+    // Horizontal lines
+    for (let i = 0; i < this.height; i += 4) {
+      ctx.beginPath();
+      ctx.moveTo(this.x, this.y + i);
+      ctx.lineTo(this.x + this.width, this.y + i);
+      ctx.stroke();
+    }
+    
+    // Vertical lines with offset pattern
+    const brickWidth = 16;
+    for (let i = 0; i < this.width; i += brickWidth) {
+      const offset = Math.floor(i / brickWidth) % 2 === 0 ? 0 : 2;
+      ctx.beginPath();
+      ctx.moveTo(this.x + i, this.y + offset);
+      ctx.lineTo(this.x + i, this.y + this.height);
+      ctx.stroke();
+    }
+
+    // Lock icon or question mark
+    const centerX = this.x + this.width / 2;
+    const centerY = this.y + this.height / 2;
+
+    // Draw lock icon
+    ctx.fillStyle = '#404040';
+    ctx.fillRect(centerX - 4, centerY - 4, 8, 8);
+    ctx.strokeStyle = '#000000';
+    ctx.strokeRect(centerX - 4, centerY - 4, 8, 8);
+    
+    // Lock body
+    ctx.fillRect(centerX - 3, centerY, 6, 4);
+    ctx.strokeRect(centerX - 3, centerY, 6, 4);
+  }
 }
 

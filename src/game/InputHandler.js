@@ -14,7 +14,7 @@ export class InputHandler {
   handleKeyDown(e) {
     this.keys[e.key] = true;
     // Prevent default for game keys
-    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' ', 'w', 'a', 's', 'd'].includes(e.key)) {
+    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' ', 'w', 'a', 's', 'd', 'Escape'].includes(e.key)) {
       e.preventDefault();
     }
   }
@@ -43,6 +43,10 @@ export class InputHandler {
 
   isJumpPressed() {
     return this.isPressed(' ') || this.isPressed('ArrowUp') || this.isPressed('w') || this.isPressed('W');
+  }
+
+  isEscapePressed() {
+    return this.isPressed('Escape');
   }
 
   cleanup() {

@@ -1,31 +1,35 @@
 /**
- * Clé de l'Autonomie
- * Secret item / extra life representing digital autonomy and independence
- * Effect: +100 Points / +1 Life (Independence)
+ * Badge d'Autonomie Numérique (Digital Autonomy Badge)
+ * Represents digital independence and free licenses (Responsabilité)
+ * Effect: +100 Points / +10 Licences Libres / +1 Life
  */
 
 import { Entity } from './Entity.js';
 
 export class CleAutonomie extends Entity {
   constructor(x, y) {
-    super(x, y, 20, 30);
+    super(x, y, 24, 24);
+    this.type = 'badge'; // Item type for story progression
     this.collected = false;
-    this.rotation = 0;
     this.glowPulse = 0;
+    this.bobOffset = 0;
+    this.bobSpeed = 0.1;
     this.points = 100;
     this.lifeBonus = 1;
   }
 
   update(deltaTime) {
-    // Rotate and pulse for special effect
-    this.rotation += 0.08;
-    this.glowPulse += 0.2;
+    // Pulse glow effect and slight bob (no rotation)
+    this.glowPulse += 0.15;
+    this.bobOffset += this.bobSpeed;
+    this.y += Math.sin(this.bobOffset) * 0.2;
   }
 
   collect() {
     this.collected = true;
     return {
       points: this.points,
+      licencesLibres: 10,  // Licences Libres / Budget (Responsabilité)
       life: this.lifeBonus
     };
   }
@@ -35,64 +39,60 @@ export class CleAutonomie extends Entity {
 
     const centerX = this.x + this.width / 2;
     const centerY = this.y + this.height / 2;
-    const glowSize = 1 + Math.sin(this.glowPulse) * 0.3;
+    const glowSize = 1 + Math.sin(this.glowPulse) * 0.2;
 
-    ctx.save();
-    ctx.translate(centerX, centerY);
-    ctx.rotate(this.rotation);
-
-    // Glow effect (rainbow colors cycling)
-    const glowColor = `hsl(${(this.glowPulse * 20) % 360}, 100%, 60%)`;
-    ctx.fillStyle = glowColor;
-    ctx.globalAlpha = 0.3;
+    // Glow effect (orange - responsibility theme)
+    const glowAlpha = 0.2 + Math.sin(this.glowPulse) * 0.15;
+    ctx.fillStyle = `rgba(255, 165, 0, ${glowAlpha})`;
     ctx.beginPath();
-    ctx.arc(0, 0, 15 * glowSize, 0, Math.PI * 2);
+    ctx.arc(centerX, centerY, 14 * glowSize, 0, Math.PI * 2);
     ctx.fill();
-    ctx.globalAlpha = 1.0;
 
-    // Key body (golden)
-    ctx.fillStyle = '#FFD700';
+    // Badge/medal (circular, orange/gold - responsibility)
+    ctx.fillStyle = '#E08040'; // Orange
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, 10, 0, Math.PI * 2);
+    ctx.fill();
     ctx.strokeStyle = '#000000';
     ctx.lineWidth = 2;
+    ctx.stroke();
 
-    // Key shaft
-    ctx.fillRect(-3, -12, 6, 20);
-    ctx.strokeRect(-3, -12, 6, 20);
-
-    // Key head (circular)
+    // Inner circle (gold)
+    ctx.fillStyle = '#FFD700';
     ctx.beginPath();
-    ctx.arc(0, -12, 6, 0, Math.PI * 2);
+    ctx.arc(centerX, centerY, 7, 0, Math.PI * 2);
     ctx.fill();
     ctx.stroke();
 
-    // Key hole in head
+    // NIRD symbol in center (shield with N)
     ctx.fillStyle = '#000000';
-    ctx.beginPath();
-    ctx.arc(0, -12, 3, 0, Math.PI * 2);
-    ctx.fill();
+    ctx.font = 'bold 10px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('N', centerX, centerY);
 
-    // Key teeth
-    ctx.fillStyle = '#FFD700';
-    ctx.fillRect(-3, 8, 6, 4);
-    ctx.strokeRect(-3, 8, 6, 4);
-    ctx.fillRect(-1, 12, 2, 4);
-    ctx.strokeRect(-1, 12, 2, 4);
-
-    // Shield symbol on key
-    ctx.fillStyle = '#0000C0';
+    // Ribbon at bottom (orange)
+    ctx.fillStyle = '#E08040';
+    ctx.fillRect(this.x + 8, this.y + 18, 8, 4);
+    ctx.strokeRect(this.x + 8, this.y + 18, 8, 4);
+    // Ribbon ends
     ctx.beginPath();
-    ctx.moveTo(0, -6);
-    ctx.lineTo(-3, -4);
-    ctx.lineTo(-3, 0);
-    ctx.lineTo(0, 2);
-    ctx.lineTo(3, 0);
-    ctx.lineTo(3, -4);
+    ctx.moveTo(this.x + 8, this.y + 18);
+    ctx.lineTo(this.x + 6, this.y + 20);
+    ctx.lineTo(this.x + 8, this.y + 22);
     ctx.closePath();
     ctx.fill();
-    ctx.strokeStyle = '#000000';
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(this.x + 16, this.y + 18);
+    ctx.lineTo(this.x + 18, this.y + 20);
+    ctx.lineTo(this.x + 16, this.y + 22);
+    ctx.closePath();
+    ctx.fill();
     ctx.stroke();
 
-    ctx.restore();
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'alphabetic';
   }
 }
 

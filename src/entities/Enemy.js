@@ -33,9 +33,9 @@ export class Enemy extends Entity {
   update(deltaTime, platforms) {
     if (this.defeated) return;
 
-    // Update animation
-    this.animationFrame += deltaTime * 0.005;
-    this.walkCycle = Math.sin(this.animationFrame * 2) * 0.5;
+    // Update animation (slower)
+    this.animationFrame += deltaTime * 0.001;
+    this.walkCycle = Math.sin(this.animationFrame * 1) * 0.5;
 
     // Patrol movement
     if (this.direction > 0) {
@@ -139,8 +139,8 @@ export class Enemy extends Entity {
     ctx.lineWidth = 2;
     ctx.strokeRect(this.x, this.y, this.width, this.height);
 
-    // Draw eyes (animated blink)
-    const blink = Math.floor(this.animationFrame * 2) % 20 < 2;
+    // Draw eyes (animated blink - slower)
+    const blink = Math.floor(this.animationFrame * 0.5) % 20 < 2;
     if (!blink) {
       ctx.fillStyle = COLORS.eyes;
       // Left eye

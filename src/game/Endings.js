@@ -85,3 +85,4 @@ export function getEndingColorClass(type) {
   return colors[type] || 'text-gray-400';
 }
 
+

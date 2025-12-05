@@ -5,31 +5,32 @@
 
 import { Player } from '../entities/Player.js';
 import { Platform } from '../entities/Platform.js';
-import { Enemy } from '../entities/Enemy.js';
 import { Collectible } from '../entities/Collectible.js';
-import { VirusObsolescence } from '../entities/VirusObsolescence.js';
-import { VerrouLogiciel } from '../entities/VerrouLogiciel.js';
-import { NuageHorsZone } from '../entities/NuageHorsZone.js';
 import { PingouinLibre } from '../entities/PingouinLibre.js';
 import { KitReconditionnement } from '../entities/KitReconditionnement.js';
 import { CleAutonomie } from '../entities/CleAutonomie.js';
+import { ServeurLocal } from '../entities/ServeurLocal.js';
 import { BlocNIRD } from '../entities/BlocNIRD.js';
 
 export class Level {
   constructor(levelData) {
     this.data = levelData;
     this.platforms = [];
-    this.enemies = [];
     this.collectibles = [];
     this.player = null;
     this.goal = levelData.goal;
   }
 
   load(game) {
-    // Clear existing entities
+    // Clear existing entities in Level
     this.platforms = [];
-    this.enemies = [];
     this.collectibles = [];
+    
+    // Also clear game's entity arrays to prevent duplicates
+    // (This is safe even if called multiple times)
+    if (game.platforms) game.platforms.length = 0;
+    if (game.collectibles) game.collectibles.length = 0;
+    if (game.nirdBlocks) game.nirdBlocks.length = 0;
 
     // Create player
     this.player = new Player(
@@ -53,51 +54,6 @@ export class Level {
       game.addPlatform(platform);
     });
 
-    // Create enemies (support NIRD enemy types)
-    if (this.data.enemies) {
-      this.data.enemies.forEach(enemyData => {
-        let enemy;
-        const enemyType = enemyData.type || 'virus'; // Default to virus
-        
-        switch (enemyType) {
-          case 'virus':
-            enemy = new VirusObsolescence(
-              enemyData.x,
-              enemyData.y,
-              enemyData.patrolLeft || enemyData.x - 50,
-              enemyData.patrolRight || enemyData.x + 50
-            );
-            break;
-          case 'verrou':
-            enemy = new VerrouLogiciel(
-              enemyData.x,
-              enemyData.y,
-              enemyData.patrolLeft || enemyData.x - 50,
-              enemyData.patrolRight || enemyData.x + 50,
-              enemyData.isFlying !== false
-            );
-            break;
-          case 'nuage':
-            enemy = new NuageHorsZone(
-              enemyData.x,
-              enemyData.y,
-              enemyData.verticalRange || 50
-            );
-            break;
-          default:
-            // Fallback to basic enemy
-            enemy = new Enemy(
-              enemyData.x,
-              enemyData.y,
-              enemyData.patrolLeft || enemyData.x - 50,
-              enemyData.patrolRight || enemyData.x + 50
-            );
-        }
-        this.enemies.push(enemy);
-        game.addEnemy(enemy);
-      });
-    }
-
     // Create collectibles (support NIRD collectible types)
     if (this.data.collectibles) {
       this.data.collectibles.forEach(collectibleData => {
@@ -105,6 +61,19 @@ export class Level {
         const collectibleType = collectibleData.type || 'pingouin';
         
         switch (collectibleType) {
+          case 'livre':
+            collectible = new PingouinLibre(collectibleData.x, collectibleData.y);
+            break;
+          case 'ordinateur':
+            collectible = new KitReconditionnement(collectibleData.x, collectibleData.y);
+            break;
+          case 'badge':
+            collectible = new CleAutonomie(collectibleData.x, collectibleData.y);
+            break;
+          case 'serveur':
+            collectible = new ServeurLocal(collectibleData.x, collectibleData.y);
+            break;
+          // Legacy support
           case 'pingouin':
             collectible = new PingouinLibre(collectibleData.x, collectibleData.y);
             break;
@@ -130,7 +99,7 @@ export class Level {
           blockData.y,
           blockData.width || 32,
           blockData.height || 32,
-          blockData.collectibleType || 'pingouin'
+          blockData.collectibleType || 'livre'
         );
         game.addNirdBlock(block);
       });
@@ -139,19 +108,29 @@ export class Level {
 
   checkGoal(player) {
     const playerBounds = player.getBounds();
+    // Portal is on the ground, check horizontal collision and if player is on/near ground
+    const portalWidth = 60;
+    const portalHeight = 40;
     const goalBounds = {
-      left: this.goal.x - 25,
-      right: this.goal.x + 25,
-      top: this.goal.y - 25,
-      bottom: this.goal.y + 25,
+      left: this.goal.x - portalWidth / 2,
+      right: this.goal.x + portalWidth / 2,
+      top: this.goal.y - portalHeight,
+      bottom: this.goal.y, // Portal bottom is at ground level
     };
 
-    return (
+    // Check horizontal collision
+    const horizontalCollision = (
       playerBounds.left < goalBounds.right &&
-      playerBounds.right > goalBounds.left &&
-      playerBounds.top < goalBounds.bottom &&
-      playerBounds.bottom > goalBounds.top
+      playerBounds.right > goalBounds.left
     );
+    
+    // Check if player is on or near the ground (within portal height)
+    const verticalCollision = (
+      playerBounds.bottom >= goalBounds.top &&
+      playerBounds.top <= goalBounds.bottom
+    );
+
+    return horizontalCollision && verticalCollision;
   }
 }
 

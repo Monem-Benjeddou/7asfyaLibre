@@ -35,9 +35,9 @@ export class NuageHorsZone extends Entity {
   update(deltaTime, platforms) {
     if (this.defeated) return;
 
-    // Update animations
-    this.animationFrame += deltaTime * 0.005;
-    this.pulse += 0.08;
+    // Update animations (slower)
+    this.animationFrame += deltaTime * 0.001;
+    this.pulse += 0.02;
 
     // Vertical movement (limited range)
     if (this.direction > 0) {
@@ -177,8 +177,8 @@ export class NuageHorsZone extends Entity {
     ctx.lineTo(centerX + serverWidth / 2 - 2, centerY + 3);
     ctx.stroke();
     
-    // Server status lights
-    const lightVisible = Math.floor(this.animationFrame * 4) % 2 === 0;
+    // Server status lights (slower blink)
+    const lightVisible = Math.floor(this.animationFrame * 1) % 2 === 0;
     ctx.fillStyle = lightVisible ? '#00FF00' : '#004000';
     ctx.fillRect(centerX - 6, centerY - serverHeight / 2 + 1, 2, 2);
     ctx.fillStyle = '#FF0000';

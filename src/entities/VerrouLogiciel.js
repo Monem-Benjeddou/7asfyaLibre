@@ -39,15 +39,15 @@ export class VerrouLogiciel extends Entity {
   update(deltaTime, platforms) {
     if (this.defeated) return;
 
-    // Update animation
-    this.animationFrame += deltaTime * 0.005;
+    // Update animation (slower)
+    this.animationFrame += deltaTime * 0.001;
     
-    // Rotate key (smooth rotation)
-    this.rotation += 0.12;
+    // Rotate key (slower rotation)
+    this.rotation += 0.03;
 
     if (this.isFlying) {
-      // Flying movement - up and down pattern
-      this.flyingOffset = Math.sin(this.rotation * 2) * 15;
+      // Flying movement - up and down pattern (slower)
+      this.flyingOffset = Math.sin(this.rotation * 1) * 15;
       this.y = this.flyingHeight + this.flyingOffset;
       
       // Horizontal patrol
