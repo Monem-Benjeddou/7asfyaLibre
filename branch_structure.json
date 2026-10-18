@@ -1,0 +1,24 @@
+{
+  "default_branch": "main",
+  "branches": [
+    "backup/pre-forcepush-2026-10-16/feat/main_menu",
+    "backup/pre-forcepush-2026-10-16/main",
+    "feat/main_menu",
+    "main",
+    "origin"
+  ],
+  "parent": {
+    "backup/pre-forcepush-2026-10-16/feat/main_menu": "main",
+    "backup/pre-forcepush-2026-10-16/main": "main",
+    "feat/main_menu": "main",
+    "main": null,
+    "origin": "main"
+  },
+  "order": [
+    "main",
+    "backup/pre-forcepush-2026-10-16/feat/main_menu",
+    "backup/pre-forcepush-2026-10-16/main",
+    "feat/main_menu",
+    "origin"
+  ]
+}
